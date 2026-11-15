@@ -7,6 +7,10 @@ from __future__ import annotations
 
 from typing import Optional, Tuple, TypedDict
 
+from rule_engine.audit import AuditLogger, AuditRecord
+
+_DEFAULT_AUDIT_LOGGER = AuditLogger()
+
 
 class PatientInput(TypedDict, total=False):
     """Input theo Data Dictionary trong docs/decision-table.md."""
@@ -146,3 +150,26 @@ def classify(patient: PatientInput) -> ClassificationResult:
         "rule_id": rule_id_t2,
         "ly_do": ly_do_final,
     }
+
+
+def classify_with_audit(
+    patient: PatientInput,
+    user_uuid: str,
+    logger: Optional[AuditLogger] = None,
+) -> Tuple[ClassificationResult, AuditRecord]:
+    """Phan loai benh nhan dong thoi ghi nhan Audit Trail (Tieu chi A-06).
+
+    Dam bao nhat ky kiem toan du 4 truong [Timestamp, User_UUID, Action_Type, Status]
+    va hoan toan khong chua du lieu lam sang tho.
+    """
+    res = classify(patient)
+    target_logger = logger if logger is not None else _DEFAULT_AUDIT_LOGGER
+    record = target_logger.log(
+        user_uuid=user_uuid,
+        action_type="EVALUATE_RULE",
+        status="SUCCESS",
+        rule_id=res["rule_id"],
+        muc_do=res["muc_do"],
+    )
+    return res, record
+

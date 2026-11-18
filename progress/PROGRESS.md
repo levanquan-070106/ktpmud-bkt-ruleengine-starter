@@ -60,33 +60,52 @@
 ### 2.1. Đối chiếu timeline PC-1
 | Việc (theo bảng 1.3) | Kế hoạch | Thực tế | Lệch & lý do |
 |---|---|---|---|
-| | | | |
+| Hiện thực module ghi Audit Trail chuẩn 4 trường (A-06) | 13/11/2026 | Hoàn thành ngày 15/11/2026 (Commit `c5244a9`) | Đúng mốc Checkpoint 2 (15/11) |
+| Xây dựng script benchmark p95 với 1.000 ca kiểm thử (A-07) và lập TEST_REPORT.md | 14/11/2026 | Hoàn thành ngày 15/11/2026 (Commit `c5244a9`) | Đúng mốc Checkpoint 2 (15/11), p95 đạt 0.0018ms |
+| Rà soát và hoàn thiện Checkpoint 2 trên fork nhóm | 15/11/2026 | Hoàn thành ngày 15/11/2026 (Commit `c5244a9`, `f7fe471`) | Đúng kế hoạch 100% |
+| Soạn thảo SECURITY_PRIVACY_CHECKLIST.md & CONTRIBUTIONS.md | 17/11/2026 | Hoàn thành ngày 15/11/2026 (Commit `da5a64b`) | Vượt tiến độ trước 2 ngày |
+| Mở sẵn Draft PR nộp bài theo Erratum #28 | Trước 11:30 18/11 | Hoàn thành tối 17/11/2026 (Draft PR #38 trên `ktpmud-project`) | Vượt tiến độ, check validate xanh |
 
 ### 2.2. Tiến độ theo acceptance criteria (cập nhật toàn bộ bảng 1.1)
 | Mã | Trạng thái | Bằng chứng | Ghi chú |
 |---|---|---|---|
-| | | | |
+| A-01 | Xong | `rule_engine/classifier.py` | In-memory rule engine, Pure Python, không còn NotImplementedError |
+| A-02 | Xong | `rule_engine/classifier.py`, `tests/test_classifier.py` | Phân loại 2 tầng tất định, không hard-code theo ID fixture |
+| A-03 | Xong | `rule_engine/classifier.py::is_shock()` | Bao phủ đủ các mức phân loại (`SOC_PHAN_VE`, `PHAN_VE`, `THEO_DOI`) |
+| A-04 | Xong | `artifacts/REQUIREMENTS.md` Mục 3, `tests/test_classifier.py` | Xử lý input thiếu/sai kiểu theo Issue #15 (thiếu HATT thỏa Tầng 2 -> `PHAN_VE`) |
+| A-05 | Xong | `artifacts/DECISIONS.md` ADR-01, `rule_engine/classifier.py` | Trả `ly_do` truy vết rule kích hoạt, không đưa lời khuyên điều trị; ưu tiên R01 > R02 > R03 |
+| A-06 | Xong | `rule_engine/audit.py`, `tests/test_audit.py` | Ghi audit đúng 4 trường `[Timestamp, User_UUID, Action_Type, Status]`, không log raw data |
+| A-07 | Xong | `tests/test_classifier.py`, `tests/test_audit.py` | 29 unit tests phủ kín normal, boundary ±1, invalid và missing cases |
+| A-08 | Xong | `pytest.ini`, `tests/` (29 passed in 0.05s) | Lệnh `pytest -q` đạt 100% từ clean checkout |
+| A-09 | Xong | `.github/workflows/test.yml` | CI GitHub Actions tự động chạy test trên Pull Request và Push, check xanh ✅ |
+| A-10 | Xong | `scripts/benchmark.py`, `artifacts/TEST_REPORT.md` | Benchmark 1.000 lần sau warm-up, p95 = 0.0018 ms (< 100 ms) trên máy đo khai báo |
+| A-11 | Xong | `README.md` | Ghi rõ disclaimer `"educational/synthetic — not for clinical use"` |
 
 ### 2.3. Sẵn sàng nộp bài (đề thi Mục 6)
 | Deliverable | Có / Chưa | Đường dẫn |
 |---|---|---|
-| README.md (cài đặt / chạy / test) | | |
-| REQUIREMENTS.md | | |
-| DECISIONS.md / ADR | | |
-| Test tự động + CI xanh | | |
-| TEST_REPORT.md | | |
-| SECURITY_PRIVACY_CHECKLIST.md | | |
-| AI_USE.md | | |
-| CONTRIBUTIONS.md | | |
-| Slide / demo script ≤ 7 phút | | |
+| README.md (cài đặt / chạy / test) | Có | `README.md` |
+| REQUIREMENTS.md | Có | `artifacts/REQUIREMENTS.md` |
+| DECISIONS.md / ADR | Có | `artifacts/DECISIONS.md` |
+| Test tự động + CI xanh | Có | `.github/workflows/test.yml`, 29 tests pass xanh ✅ |
+| TEST_REPORT.md | Có | `artifacts/TEST_REPORT.md` |
+| SECURITY_PRIVACY_CHECKLIST.md | Có | `artifacts/SECURITY_PRIVACY_CHECKLIST.md` |
+| AI_USE.md | Có | `artifacts/AI_USE.md` |
+| CONTRIBUTIONS.md | Có | `artifacts/CONTRIBUTIONS.md` |
+| Slide / demo script ≤ 7 phút | Đang làm | `slides/` (chuẩn bị cho buổi vấn đáp 21/11) |
 
 ### 2.4. Việc còn lại đến Freeze (23:59 19/11)
 | Việc | Vai trò phụ trách | Hạn |
 |---|---|---|
-| | | |
+| Rà soát lần cuối toàn bộ mã nguồn và tài liệu trên fork | Cả nhóm | 19/11/2026 |
+| Tạo và gắn tag release candidate `bkt-2026-nhom18-19-rc1` | Lead | 23:59 19/11/2026 |
+| Hoàn thiện slide thuyết trình demo (<= 7 phút) trong `slides/` | Cả nhóm | 20/11/2026 |
+| Chuyển Draft PR #38 sang Ready for review để nộp bài chính thức | Lead | 20/11/2026 |
 
 ### 2.5. Rủi ro / câu hỏi cho GV
-- 
+- Nhóm đã hoàn thành 100% các tiêu chí A-01..A-11, toàn bộ 29/29 tests xanh và đã mở sẵn Draft PR #38 trên repo `ktpmud-project` với check `validate` xanh theo Erratum #28.
+- Không có vướng mắc kỹ thuật.
+
 
 ## Kết quả cuối — Freeze 19/11/2026
 - Tag: bkt-2026-<mã nhóm>-rc1 · SHA: 

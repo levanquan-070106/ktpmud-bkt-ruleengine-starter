@@ -108,6 +108,6 @@
 
 
 ## Kết quả cuối — Freeze 19/11/2026
-- Tag: bkt-2026-<mã nhóm>-rc1 · SHA: 
-- Trạng thái cuối từng mã AC: (cập nhật bảng 2.2 hoặc ghi "như 2.2 trừ: …")
-- Những việc trong timeline chưa hoàn thành và lý do:
+- Tag: `bkt-2026-nhom18-19-rc1`
+- Trạng thái cuối từng mã AC: Hoàn thành 100% tất cả 11/11 tiêu chí (A-01 đến A-11) như bảng 2.2; toàn bộ 29/29 automated tests pass 100%; latency benchmark p95 = 0.0018 ms (< 100 ms).
+- Những việc trong timeline chưa hoàn thành và lý do: Không có (tất cả các đầu việc kỹ thuật, 6 tài liệu artifacts và Draft PR #38 đều hoàn thành đúng hạn).
